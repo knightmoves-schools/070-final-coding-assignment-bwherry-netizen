@@ -1,10 +1,9 @@
 using System;
-using System.Linq;  // <-- add this for Distinct()
+using System.Linq;
 
 namespace knightmoves;
 
 class Game{
-    // Make your changes in this file
 
 	private string phrase;
 	
