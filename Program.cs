@@ -656,42 +656,28 @@ class Program
             "Yours Truly"};
 
         int max = phrases.Length - 1;
-int phraseIndex = new Random().Next(0, max);
+        int phraseIndex = new Random().Next(0, max);
 
-string phrase = phrases[phraseIndex];
-var game = new Game(phrase);
+        string phrase = phrases[phraseIndex];
+        var game = new Game(phrase);
 
-string guess = "";
-bool isValid = false;
+        Console.WriteLine("Please enter 10 letters that you want revealed for: " + game.DisplayBlanks());
+        var tenLetters = Console.ReadLine();
+        var guess = tenLetters ?? "";
 
-// Loop until the user enters valid input
-while(!isValid)
-{
-    Console.WriteLine("Please enter 10 letters that you want revealed for: " + game.DisplayBlanks());
-    var input = Console.ReadLine() ?? "";
+        var isValid = game.IsValid(guess);
 
-    if(game.IsValid(input))
-    {
-        guess = input;
-        isValid = true;
+        if(isValid){
+            var result = game.Play(guess.ToCharArray());
+            Console.WriteLine(result);
+        } else {
+            Console.WriteLine("You failed to enter 10 unique letters with no spaces.");
+        }
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine("================================");
+        Console.WriteLine("========= GAME RESULTS =========");
+        Console.WriteLine("================================");
+        Console.WriteLine("The hidden phrase was: " + phrase);
     }
-    else
-    {
-        Console.WriteLine("Invalid input! Make sure you enter 10 unique letters with no spaces.");
-    }
-}
-
-// Now show the phrase with guessed letters revealed
-var result = game.Play(guess.ToCharArray());
-Console.WriteLine();
-Console.WriteLine(result);  // <-- This shows the phrase with the guessed letters
-
-// Final game results
-Console.WriteLine();
-Console.WriteLine("================================");
-Console.WriteLine("========= GAME RESULTS =========");
-Console.WriteLine("================================");
-Console.WriteLine("The hidden phrase was: " + phrase);
-}
-}
 }
