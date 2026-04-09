@@ -5,7 +5,6 @@ namespace knightmoves;
 
 class Game{
     // Make your changes in this file
-
 	private string phrase;
 	
     public Game(string phrase)
