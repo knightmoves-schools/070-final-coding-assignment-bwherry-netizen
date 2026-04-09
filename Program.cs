@@ -681,3 +681,4 @@ class Program
         Console.WriteLine("The hidden phrase was: " + phrase);
     }
 }
+}
