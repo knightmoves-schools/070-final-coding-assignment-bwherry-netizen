@@ -3,67 +3,114 @@ using System.Linq;
 
 namespace knightmoves;
 
-class Game{
-    // Make your changes in this file
+class Game
+{
+    private string phrase;
 
-	private string phrase;
-	
     public Game(string phrase)
     {
-		this.phrase = phrase;
-	}
+        this.phrase = phrase;
+    }
 
     public string DisplayBlanks()
-{
-    string result = "";
-
-    foreach (char c in phrase)
     {
-        if (c == ' ')
+        string result = "";
+
+        foreach (char c in phrase)
+        {
+            if (c == ' ')
+                result += "  ";
+            else
+                result += "_ ";
+        }
+
+        return result.TrimEnd();
+    }
+
+    public bool ApplyEasterEggCheat(string guessedLetters)
     {
-        result += "  ";
+        string magicWord = "PLAY";
+        return guessedLetters.ToUpper().Contains(magicWord);
     }
-    else
+
+    public bool ApplyTimeCheat(int divisibleByValue)
     {
-        result += "_ ";
+        int seconds = DateTime.Now.Second;
+        return seconds % divisibleByValue == 0;
     }
+
+    public string Play(char[] guessedLetters)
+    {
+        string result = "";
+        string guess = new string(guessedLetters).ToUpper();
+
+        if (ApplyEasterEggCheat(guess))
+        {
+            foreach (char c in phrase)
+            {
+                if (c == ' ')
+                    result += "  ";
+                else
+                    result += c + " ";
+            }
+            return result.TrimEnd();
+        }
+
+        bool timeCheat = ApplyTimeCheat(2);
+
+        int wordIndex = 0;
+        bool newWord = true;
+
+        foreach (char c in phrase)
+        {
+            if (c == ' ')
+            {
+                result += "  ";
+                newWord = true;
+                continue;
+            }
+
+            if (newWord)
+            {
+                wordIndex++;
+                newWord = false;
+            }
+
+            if (timeCheat && wordIndex % 2 == 0)
+            {
+                result += c + " ";
+            }
+            else if (guess.Contains(char.ToUpper(c)))
+            {
+                result += c + " ";
+            }
+            else
+            {
+                result += "_ ";
+            }
+        }
+
+        return result.TrimEnd();
     }
 
-    return result.TrimEnd();
-}
-    
-public string Play(char[] guessedLetters)
-{
-    string result = "";
-    
-    string guess = new string(guessedLetters).ToUpper();
-
-   foreach (char c in phrase)
-{
-    if (c == ' ')
-        result += "  ";
-    else if (guess.Contains(char.ToUpper(c)))
-        result += c + " ";
-    else
-        result += "_ ";
-}
-
-    return result.TrimEnd();
-}
-        
-    public bool IsValid(string guessedLetters){
-		if(guessedLetters.Length != 10){
-			return false;
-		} else if (guessedLetters.Contains(" ")) {
-			return false;
-			
-		} else if (guessedLetters.Distinct().Count() != 10)
-		{
-   			 return false;
-		}
-		else 
-		{
-        return true;
+    public bool IsValid(string guessedLetters)
+    {
+        if (guessedLetters.Length != 10)
+        {
+            return false;
+        }
+        else if (guessedLetters.Contains(" "))
+        {
+            return false;
+        }
+        else if (guessedLetters.Distinct().Count() != 10)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
 
