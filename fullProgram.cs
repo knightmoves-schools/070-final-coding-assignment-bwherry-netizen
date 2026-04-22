@@ -5,20 +5,20 @@ namespace knightmoves;
 
 class Game
 {
-    private string phrase;
+    private string _phrase;
 
     public Game(string phrase)
     {
-        this.phrase = phrase;
+        _phrase = phrase;
     }
 
     public string DisplayBlanks()
     {
         string result = "";
 
-        foreach (char c in phrase)
+        foreach (char c in _phrase)
         {
-            if (c == ' ')
+            if (c.Equals(' '))
                 result += "  ";
             else
                 result += "_ ";
@@ -46,7 +46,7 @@ class Game
 
         if (ApplyEasterEggCheat(guess))
         {
-            foreach (char c in phrase)
+            foreach (char c in _phrase)
             {
                 if (c == ' ')
                     result += "  ";
@@ -60,9 +60,13 @@ class Game
 
         int wordIndex = 0;
         bool newWord = true;
-
-        foreach (char c in phrase)
+		
+	bool isFriday = DateTime.Now.DayOfWeek == DayOfWeek.Friday;
+		
+        for (int i = 0; i < _phrase.Length; i++)
         {
+			char c = _phrase[i];
+			
             if (c == ' ')
             {
                 result += "  ";
@@ -89,21 +93,14 @@ class Game
                 result += "_ ";
             }
         }
-
         return result.TrimEnd();
     }
 
+
+
     public bool IsValid(string guessedLetters)
     {
-        if (guessedLetters.Length != 10)
-        {
-            return false;
-        }
-        else if (guessedLetters.Contains(" "))
-        {
-            return false;
-        }
-        else if (guessedLetters.Distinct().Count() != 10)
+        if (guessedLetters.Length > 10 && guessedLetters.Length < 10 && guessedLetters.Contains(" ") && guessedLetters.Distinct().Count() < 10 && guessedLetters.Distinct().Count() > 10)
         {
             return false;
         }
@@ -797,5 +794,4 @@ class Program
         Console.WriteLine("================================");
         Console.WriteLine("The hidden phrase was: " + phrase);
     }
-}
 }
